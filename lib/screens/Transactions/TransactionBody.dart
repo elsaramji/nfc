@@ -126,6 +126,19 @@ class _TransactionxState extends State<Transactionx> {
                       LightUpButton(
                         text: "Send",
                         onPressed: () async {
+                          try {
+                            NfcService.writeNFC();
+                            setState(() {
+                              data = "NFC Data Write";
+                            });
+                          } catch (e) {
+                            print(e.toString());
+
+                            setState(() {
+                              data = "NFC Data Write Error";
+                            });
+                          }
+
                           // _updateSelectedButton(0);
                           // _sendTransaction();
                         },
@@ -135,6 +148,18 @@ class _TransactionxState extends State<Transactionx> {
                       LightUpButton(
                         text: "Receive",
                         onPressed: () async {
+                          try {
+                            NfcService.readNFC();
+                            setState(() {
+                              data = "NFC Data read";
+                            });
+                          } catch (e) {
+                            print(e.toString());
+
+                            setState(() {
+                              data = "NFC Data Write Error";
+                            });
+                          }
                           // _updateSelectedButton(1);
                           // await _receiveTransaction();
                         },
@@ -191,17 +216,6 @@ class _TransactionxState extends State<Transactionx> {
                         const SizedBox(height: 10.0),
                         ElevatedButton(
                           onPressed: () async {
-                            try {
-                              await NfcService.writeNFC();
-                              setState(() {
-                                data = "NFC Data: finded";
-                              });
-                            } catch (e) {
-                              setState(() {
-                                data = "NFC Data: not finded";
-                              });
-                            }
-
                             /*
                             if (_formKey.currentState!.validate()) {
                               // Form is valid, process payment

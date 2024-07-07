@@ -17,19 +17,19 @@ class NfcService {
           probeWebUSBMagic: true,
           androidCheckNDEF: true,
         );
-        log("Nfc Tag : " + tag.toString());
+        log("Nfc Tag : ${tag.protocolInfo}");
         if (tag.ndefAvailable!) {
           print('NDEF message available');
           // Process NDEF message
           List<NDEFRecord> records = await FlutterNfcKit.readNDEFRecords();
-          log("Nfc Tag 1: " + records.toString());
+          log("Nfc Tag 1: $records");
         } else {
           var message =
               await FlutterNfcKit.readBlock(0, iso15693ExtendedMode: true);
-          log("Nfc Tag 2 : " + message.toString());
+          log("Nfc Tag 2 : ${message[0]}");
         }
       } catch (e) {
-        log("exception: " + e.toString());
+        log("exception: $e");
       }
     }
   }
@@ -43,7 +43,7 @@ class NfcService {
     );
 
     if (NFCAvailability.available == await FlutterNfcKit.nfcAvailability) {
-      log("Nfc Tag : " + tag.protocolInfo.toString());
+      log("Nfc Tag : ${tag.protocolInfo}");
       try {
         await FlutterNfcKit.writeBlock(0, "Hello World NFC");
 
