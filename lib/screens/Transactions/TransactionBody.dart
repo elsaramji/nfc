@@ -46,6 +46,7 @@ class Transactionx extends StatefulWidget {
 
 class _TransactionxState extends State<Transactionx> {
   final _formKey = GlobalKey<FormState>();
+  String data = "No NFC Data";
   final amount = TextEditingController();
   int _selectedButtonIndex = -1; // Index of the currently selected button
 
@@ -189,9 +190,11 @@ class _TransactionxState extends State<Transactionx> {
                         ),
                         const SizedBox(height: 10.0),
                         ElevatedButton(
-                          onPressed: () {
-                            NfcService.readNFC();
-
+                          onPressed: () async {
+                            await NfcService.readNFC();
+                            setState(() {
+                              data = "NFC Data: finded";
+                            });
                             /*
                             if (_formKey.currentState!.validate()) {
                               // Form is valid, process payment
@@ -208,6 +211,10 @@ class _TransactionxState extends State<Transactionx> {
                             "Pay",
                             style: TextStyle(fontSize: 15.0),
                           ),
+                        ),
+                        Text(
+                          data,
+                          style: TextStyle(fontSize: 15.0),
                         ),
                       ],
                     ),

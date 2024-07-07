@@ -1,5 +1,7 @@
 // services/nfcService.dart
 
+import 'dart:developer';
+
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 
 class NfcService {
@@ -11,9 +13,9 @@ class NfcService {
           readIso18092: true,
           probeWebUSBMagic: true,
         );
-        print(tag.toJson());
+        log("Nfc Tag : " + tag.toJson().toString());
       } catch (e) {
-        print(e.toString());
+        log("exception: " + e.toString());
       }
     }
   }
