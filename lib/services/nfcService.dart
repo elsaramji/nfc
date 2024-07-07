@@ -13,7 +13,8 @@ class NfcService {
           readIso18092: true,
           probeWebUSBMagic: true,
         );
-        log("Nfc Tag : " + tag.toJson().toString());
+        var records = await FlutterNfcKit.readNDEFRecords();
+        log("Nfc Tag : " + records.toString());
       } catch (e) {
         log("exception: " + e.toString());
       }
