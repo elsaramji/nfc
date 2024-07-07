@@ -192,7 +192,7 @@ class _TransactionxState extends State<Transactionx> {
                         ElevatedButton(
                           onPressed: () async {
                             try {
-                              await NfcService.readNFC();
+                              await NfcService.writeNFC();
                               setState(() {
                                 data = "NFC Data: finded";
                               });

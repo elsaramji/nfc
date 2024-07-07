@@ -31,4 +31,25 @@ class NfcService {
       }
     }
   }
+
+  static writeNFC() async {
+    var tag = await FlutterNfcKit.poll(
+      timeout: const Duration(seconds: 5),
+      readIso18092: true,
+      probeWebUSBMagic: true,
+      androidCheckNDEF: true,
+    );
+    log("Nfc Tag : ${tag.ndefType}");
+    if (NFCAvailability.available == await FlutterNfcKit.nfcAvailability) {
+      try {
+        var response = await FlutterNfcKit.transceive(
+          "Hello Dart!",
+          timeout: const Duration(seconds: 5),
+        );
+        print("Massage Nfc " + response);
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+  }
 }
