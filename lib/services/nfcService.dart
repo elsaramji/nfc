@@ -4,30 +4,22 @@ import 'dart:developer';
 
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 
-import 'package:ndef/record.dart';
-import 'package:nfc_manager/nfc_manager.dart';
-
 class NfcService {
   static readNFC() async {
     if (NFCAvailability.available == await FlutterNfcKit.nfcAvailability) {
       try {
         var tag = await FlutterNfcKit.poll(
-          timeout: const Duration(seconds: 5),
+          timeout: const Duration(seconds: 30),
           readIso18092: true,
           probeWebUSBMagic: true,
           androidCheckNDEF: true,
         );
         log("Nfc Tag : ${tag.protocolInfo}");
-        if (tag.ndefAvailable!) {
-          print('NDEF message available');
-          // Process NDEF message
-          List<NDEFRecord> records = await FlutterNfcKit.readNDEFRecords();
-          log("Nfc Tag 1: $records");
-        } else {
-          var message =
-              await FlutterNfcKit.readBlock(0, iso15693ExtendedMode: true);
-          log("Nfc Tag 2 : ${message[0]}");
-        }
+
+        var message = await FlutterNfcKit.readBlock(2);
+
+        log("Nfc Tag 2 : ${message.toString()}");
+        await FlutterNfcKit.finish();
       } catch (e) {
         log("exception: $e");
       }
@@ -36,7 +28,7 @@ class NfcService {
 
   static writeNFC() async {
     var tag = await FlutterNfcKit.poll(
-      timeout: const Duration(seconds: 5),
+      timeout: const Duration(seconds: 30),
       readIso18092: true,
       probeWebUSBMagic: true,
       androidCheckNDEF: true,
@@ -44,9 +36,11 @@ class NfcService {
 
     if (NFCAvailability.available == await FlutterNfcKit.nfcAvailability) {
       log("Nfc Tag : ${tag.protocolInfo}");
-      try {
-        await FlutterNfcKit.writeBlock(0, "Hello World NFC");
 
+      try {
+        await FlutterNfcKit.writeBlock(2, "Hello World NFC");
+        log("Nfc Tag 2 : ${await FlutterNfcKit.readBlock(2)}");
+        await FlutterNfcKit.finish();
         /*
          await FlutterNfcKit.transceive(
           "Send 1000", 
