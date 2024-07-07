@@ -16,14 +16,14 @@ class NfcService {
           probeWebUSBMagic: true,
           androidCheckNDEF: true,
         );
-
+        log("Nfc Tag : " + tag.toString());
         if (tag.ndefAvailable!) {
           print('NDEF message available');
           // Process NDEF message
           List<NDEFRecord> records = await FlutterNfcKit.readNDEFRecords();
-          log("Nfc Tag : " + records.toString());
+          log("Nfc Tag 1: " + records.toString());
         } else {
-          var message = await FlutterNfcKit.transceive(tag.applicationData!);
+          var message = await FlutterNfcKit.transceive(tag);
           log("Nfc Tag 2 : " + message.toString());
         }
       } catch (e) {
