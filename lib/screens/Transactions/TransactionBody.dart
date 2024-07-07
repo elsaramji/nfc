@@ -191,10 +191,17 @@ class _TransactionxState extends State<Transactionx> {
                         const SizedBox(height: 10.0),
                         ElevatedButton(
                           onPressed: () async {
-                            await NfcService.readNFC();
-                            setState(() {
-                              data = "NFC Data: finded";
-                            });
+                            try {
+                              await NfcService.readNFC();
+                              setState(() {
+                                data = "NFC Data: finded";
+                              });
+                            } catch (e) {
+                              setState(() {
+                                data = "NFC Data: not finded";
+                              });
+                            }
+
                             /*
                             if (_formKey.currentState!.validate()) {
                               // Form is valid, process payment
